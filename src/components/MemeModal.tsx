@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import memeKasitau from "../assets/memes/meme-kasitau.png";
 import memeGakNgerti from "../assets/memes/meme-gak-ngerti.png";
 import memeAyam from "../assets/memes/meme-ayam.png";
@@ -56,6 +56,26 @@ interface MemeModalProps {
 export default function MemeModal({ isOpen, onClose }: MemeModalProps) {
   const [index, setIndex] = useState(0);
   const [animKey, setAnimKey] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(7);
+
+  // Auto-close countdown 7 detik jika tidak ditutup manual
+  useEffect(() => {
+    if (!isOpen) return;
+
+    setTimeLeft(7);
+    const interval = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          onClose();
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -77,9 +97,20 @@ export default function MemeModal({ isOpen, onClose }: MemeModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-fade-in">
-      {/* Modal Box */}
-      <div className="relative w-full max-w-lg overflow-hidden rounded-2xl bg-white shadow-2xl border-4 border-amber-400 animate-pop-in">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
+      {/* Click outside to close */}
+      <div className="absolute inset-0" onClick={onClose} />
+
+      {/* Modal Box - Centered in screen */}
+      <div className="relative z-10 m-auto w-full max-w-lg overflow-hidden rounded-2xl bg-white shadow-2xl border-4 border-amber-400 animate-pop-in">
+        {/* Auto-close Progress Bar (7s countdown) */}
+        <div className="h-1.5 w-full bg-slate-900/30 overflow-hidden">
+          <div
+            className="h-full bg-amber-400 transition-all duration-1000 ease-linear"
+            style={{ width: `${(timeLeft / 7) * 100}%` }}
+          />
+        </div>
+
         {/* Header bar */}
         <div className={`bg-gradient-to-r ${current.bgColor} px-5 py-3 text-white flex items-center justify-between`}>
           <div className="flex items-center gap-2">
@@ -89,13 +120,22 @@ export default function MemeModal({ isOpen, onClose }: MemeModalProps) {
               <h3 className="text-base font-black tracking-wide leading-tight">BETA VERSION POPUP :V</h3>
             </div>
           </div>
-          <button
-            onClick={onClose}
-            className="flex h-8 w-8 items-center justify-center rounded-full bg-white/20 hover:bg-white/30 text-white font-bold transition text-sm"
-            title="Tutup"
-          >
-            ✕
-          </button>
+
+          <div className="flex items-center gap-2.5">
+            {/* Countdown Badge */}
+            <span className="rounded-full bg-black/40 px-2.5 py-1 text-xs font-mono font-bold text-amber-300 border border-amber-300/40">
+              ⏳ {timeLeft}s
+            </span>
+
+            {/* Tombol X (Close Button) */}
+            <button
+              onClick={onClose}
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-rose-600 hover:bg-rose-700 text-white font-black transition text-base shadow-lg border-2 border-white hover:scale-110 active:scale-95"
+              title="Tutup (X)"
+            >
+              ✕
+            </button>
+          </div>
         </div>
 
         {/* Meme Image Area */}
@@ -155,9 +195,10 @@ export default function MemeModal({ isOpen, onClose }: MemeModalProps) {
 
           <button
             onClick={onClose}
-            className="rounded-lg bg-slate-800 px-4 py-2 text-xs font-bold text-white hover:bg-slate-900 transition"
+            className="rounded-lg bg-slate-800 px-4 py-2 text-xs font-bold text-white hover:bg-slate-900 transition flex items-center gap-1.5"
           >
-            Ampun Bang, Tutup :v
+            <span>Tutup Sekarang ({timeLeft}s)</span>
+            <span className="font-bold text-rose-400">✕</span>
           </button>
         </div>
       </div>
