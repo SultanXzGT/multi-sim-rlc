@@ -363,17 +363,9 @@ export default function App() {
 
       {/* Funny notice banner */}
       <div
-        onClick={() => {
-          setCurrentMemeIndex((prev) => getRandomMemeIndex(prev));
-          setIsMemeOpen(true);
-        }}
-        className="cursor-pointer bg-gradient-to-r from-amber-500 via-rose-600 to-amber-500 py-2.5 px-4 text-center text-xs sm:text-sm font-extrabold text-white shadow-sm tracking-wide hover:brightness-110 transition flex items-center justify-center gap-2"
-        title="Klik untuk membuka meme popup :v"
+        className="bg-gradient-to-r from-amber-500 via-rose-600 to-amber-500 py-2.5 px-4 text-center text-xs sm:text-sm font-extrabold text-white shadow-sm tracking-wide flex items-center justify-center gap-2"
       >
         <span>📢 SISANYA KALIAN CARI SENDIRI YA SELAMAT MENGERJAKAN KALAU MAU FULL VERSION YTTA GUYS :V</span>
-        <span className="hidden sm:inline-block rounded bg-white/30 px-2 py-0.5 text-[11px] font-mono animate-pulse">
-          Buka Meme 🎭
-        </span>
       </div>
 
       {/* Main Tab Navigation Bar */}
@@ -406,17 +398,6 @@ export default function App() {
             >
               <span className="text-amber-500 font-bold">▦</span>
               C. Analisis Perhitungan
-            </button>
-
-            {/* Direct Meme Trigger in Nav */}
-            <button
-              onClick={() => {
-                setCurrentMemeIndex((prev) => getRandomMemeIndex(prev));
-                setIsMemeOpen(true);
-              }}
-              className="ml-auto flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-rose-600 px-3.5 py-2 text-xs font-black text-white shadow hover:scale-105 transition animate-pulse"
-            >
-              <span>🎭 Bocoran Meme (YTTA :v)</span>
             </button>
           </div>
 
@@ -782,18 +763,6 @@ export default function App() {
         )}
       </main>
 
-      {/* Floating Meme Trigger Button */}
-      <button
-        onClick={() => {
-          setCurrentMemeIndex((prev) => getRandomMemeIndex(prev));
-          setIsMemeOpen(true);
-        }}
-        className="fixed bottom-5 right-5 z-40 flex items-center gap-2 rounded-full bg-gradient-to-r from-rose-600 via-amber-500 to-rose-600 px-4 py-3 text-xs sm:text-sm font-black text-white shadow-2xl hover:scale-110 active:scale-95 transition-all border-2 border-white animate-bounce"
-        title="Klik untuk membuka meme popup"
-      >
-        <span className="text-base">🎭</span>
-        <span>Meme Bocoran (YTTA :v)</span>
-      </button>
 
       {/* Meme Popup Modal */}
       <MemeModal
