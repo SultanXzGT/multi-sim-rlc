@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+body { background:#e9edf2; font-family: "Segoe UI", Roboto, Arial, sans-serif; }
+.grid-dots {
+  background-color:#fff;
+  background-image: radial-gradient(#9aa3ad 1px, transparent 1px);
+  background-size: 12px 12px;
+}
+.lcd { font-family: "Consolas","Courier New",monospace; }
+.vfd { font-family: "Consolas","Courier New",monospace; color:#4dff6a; text-shadow:0 0 6px rgba(77,255,106,.7); }
+input[type=range]{ accent-color:#dc2626; }
+
+/* Cetak: hanya bagian #tabel yang tampil */
+@media print {
+  body * { visibility: hidden !important; }
+  #tabel, #tabel * { visibility: visible !important; }
+  #tabel { position: absolute; left: 0; top: 0; width: 100%; padding: 0 !important; box-shadow: none !important; }
+  @page { size: landscape; margin: 10mm; }
+}
