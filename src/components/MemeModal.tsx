@@ -98,6 +98,13 @@ export default function MemeModal({ isOpen, onClose, currentIndex, onSelectIndex
     setAnimKey((prev) => prev + 1);
   };
 
+  const randomMeme = () => {
+    const choices = [0, 1, 2, 3, 4].filter((i) => i !== safeIndex);
+    const nextIdx = choices[Math.floor(Math.random() * choices.length)];
+    onSelectIndex(nextIdx);
+    setAnimKey((prev) => prev + 1);
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
       {/* Click outside backdrop to close */}
@@ -147,7 +154,7 @@ export default function MemeModal({ isOpen, onClose, currentIndex, onSelectIndex
 
         {/* Info notice bar */}
         <div className="bg-amber-100 px-4 py-1.5 text-center text-[11px] font-bold text-amber-900 border-b border-amber-200">
-          ⏱️ Auto-close dalam {timeLeft} detik • Muncul bergantian tiap 1 menit
+          🎲 Meme Acak • Auto-close {timeLeft}s • Muncul acak tiap 1 menit
         </div>
 
         {/* Meme Image Area */}
@@ -200,15 +207,25 @@ export default function MemeModal({ isOpen, onClose, currentIndex, onSelectIndex
           <div className="flex items-center gap-1.5">
             <button
               onClick={prevMeme}
-              className="rounded-lg bg-slate-200 px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-300 transition"
+              className="rounded-lg bg-slate-200 px-2.5 py-2 text-xs font-bold text-slate-700 hover:bg-slate-300 transition"
+              title="Gambar Sebelumnya"
             >
-              ◀ Prev
+              ◀
+            </button>
+            <button
+              onClick={randomMeme}
+              className="rounded-lg bg-gradient-to-r from-amber-500 via-rose-500 to-amber-500 px-3.5 py-2 text-xs font-black text-white shadow hover:opacity-95 transition flex items-center gap-1.5 animate-pulse"
+              title="Pilih Meme Acak Lainnya"
+            >
+              <span>🎲 Acak Gambar</span>
+              <span className="text-[11px] opacity-90 font-mono">({safeIndex + 1}/{MEMES.length})</span>
             </button>
             <button
               onClick={nextMeme}
-              className="rounded-lg bg-gradient-to-r from-amber-500 to-rose-600 px-4 py-2 text-xs font-black text-white shadow hover:opacity-95 transition flex items-center gap-1 animate-pulse"
+              className="rounded-lg bg-slate-200 px-2.5 py-2 text-xs font-bold text-slate-700 hover:bg-slate-300 transition"
+              title="Gambar Selanjutnya"
             >
-              Ganti Gambar 😂 ({safeIndex + 1}/{MEMES.length})
+              ▶
             </button>
           </div>
 
