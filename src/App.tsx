@@ -101,13 +101,25 @@ type SubTab = "simulasi" | "tabel" | "grafik";
 export default function App() {
   const [activeTab, setActiveTab] = useState<Tab>("praktikum");
   const [subTab, setSubTab] = useState<SubTab>("simulasi");
-  const [isMemeOpen, setIsMemeOpen] = useState(false);
+  // Langsung muncul saat buka web
+  const [isMemeOpen, setIsMemeOpen] = useState(true);
+  const [currentMemeIndex, setCurrentMemeIndex] = useState(0);
 
-  // Otomatis buka meme popup setelah 1.5 detik saat web pertama dibuka
+  const handleCloseMeme = () => {
+    setIsMemeOpen(false);
+    // Maju ke gambar berikutnya untuk giliran selanjutnya (Gambar 1 -> 2 -> 3 -> 4 -> 5 -> 1)
+    setCurrentMemeIndex((prev) => (prev + 1) % 5);
+  };
+
+  // Kalau sudah ditutup, tunggu 1 menit (60 detik) lalu muncul lagi secara otomatis!
   useEffect(() => {
-    const timer = setTimeout(() => setIsMemeOpen(true), 1500);
-    return () => clearTimeout(timer);
-  }, []);
+    if (!isMemeOpen) {
+      const timer = setTimeout(() => {
+        setIsMemeOpen(true);
+      }, 60000); // 60 detik (1 menit)
+      return () => clearTimeout(timer);
+    }
+  }, [isMemeOpen]);
 
   const [mode, setMode] = useState<Mode>("seri");
   const [R, setR] = useState(2000);
@@ -766,7 +778,12 @@ export default function App() {
       </button>
 
       {/* Meme Popup Modal */}
-      <MemeModal isOpen={isMemeOpen} onClose={() => setIsMemeOpen(false)} />
+      <MemeModal
+        isOpen={isMemeOpen}
+        onClose={handleCloseMeme}
+        currentIndex={currentMemeIndex}
+        onSelectIndex={setCurrentMemeIndex}
+      />
     </div>
   );
 }
